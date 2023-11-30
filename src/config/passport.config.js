@@ -3,20 +3,18 @@ import GitHubStrategy from "passport-github2"
 import { createHash, isValidPassword } from "../utils.js"
 import passport from "passport"
 import local from "passport-local"
-import UserManager from "../DAO/manager/UserManager.js"
+import usersController from "../controllers/users.controller.js"
 
 const localStrategy = local.Strategy
-const usersManager = new UserManager(); 
-//para recordar, lo que tengo acá es llamado estrategia 1 y se puede autentificar de manera local 
 
-/*Es importante entender que la utentificación por terceros surge por la ncesiddad de agilizar los procesosa a la hora de registrarse en 
-cualquier tipo de aplicación, entonces se crea una aplicación para que se conecte a otras aplicaciones, es el caso de google por ejemplo*/
+//const usersController = new UsersController(); 
+
 const initializaPassport = () => {
     passport.use('formRegister', new localStrategy({passReqToCallback: true, usernameField: "email"}, async (req, username, password, done) => {
         const { first_name, last_name, email, age, rol } = req.body;
 
         try {
-            let user = await usersManager.findEmail({ email: username });
+            let user = await usersController.findEmail({ email: username });
 
             //if (user !== undefined) {
             if (user) {
@@ -27,7 +25,7 @@ const initializaPassport = () => {
             const hashedPassword = await createHash(password); // Aquí se hashea la contraseña
             const newUser = { first_name, last_name, email, age, rol, password: hashedPassword };
 
-            const result = await usersManager.addUser(newUser);
+            const result = await usersController.addUser(newUser);
             if (result === 'Usuario creado correctamente') {
                 // Usuario creado con éxito
                 return done(null, user);
@@ -90,7 +88,7 @@ const initializaPassport = () => {
          try {
              console.log(profile)
          ////Verificación del Usuario:
-             let user = await usersManager.findEmail({ email: profile.__json.email }) //busca en la base de datos si ya existe un usuario con la dirección de correo electrónico proporcionada por GitHub.
+             let user = await usersController.findEmail({ email: profile.__json.email }) //busca en la base de datos si ya existe un usuario con la dirección de correo electrónico proporcionada por GitHub.
              if(!user){ //si usuario no existe 
          ////Creación de un Nuevo Usuario:
                  let newUser = { //vamos a crear un nuevo usuario 
@@ -103,7 +101,7 @@ const initializaPassport = () => {
 
                  }
 
-                 let result = await usersManager.addUser(newUser) //agrega el nuevo usuario a la base de datos.
+                 let result = await usersController.addUser(newUser) //agrega el nuevo usuario a la base de datos.
                  done(null,result) //indica que la autenticación ha tenido éxito y proporciona el resultado (el nuevo usuario) a Passport.
              }
          ////Manejo de Errores:
@@ -114,48 +112,6 @@ const initializaPassport = () => {
              return done(error)
          }
     }))
-
-/*
-passport.use('github', new GitHubStrategy({ 
-    clientID: "Iv1.1cce9042759205e6", 
-    clientSecret: "ec77c739b76d5d416dd4393f2a970bcdbe1406a3",
-    callbackURL: "http://localhost:8080/api/sessions/githubcallback"
-}, async (accessToken, refreshToken, profile, done) => { 
-    try {
-        const userEmail = profile?.__json?.email;
-
-        if (!userEmail) {
-            // Manejar la falta de correo electrónico en el perfil de GitHub
-            console.log("El perfil de GitHub no tiene la propiedad 'email'");
-            return done(new Error("No se proporciona un correo electrónico en el perfil de GitHub"));
-        }
-
-        let user = await usersManager.findEmail({ email: userEmail });
-
-        if (!user) { 
-            console.log(profile);
-
-            let newUser = { 
-                first_name: profile.__json.login,
-                last_name: "github",
-                age: 20,
-                email: userEmail,
-                rol: "admin", 
-                password: "",
-            }
-
-            let result = await usersManager.addUser(newUser);
-            done(null, result);
-        } else {
-            done(null, user);
-        }
-    } catch (error) {
-        return done(error);
-    }
-}));
-*/
-
-
 
 }
 

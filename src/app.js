@@ -7,14 +7,13 @@ import FileStore from 'session-file-store'
 import passport from "passport";
 import * as path from "path" 
 
-import ProductManager from "./DAO/manager/ProductManager.js";
-import CartManager from "./DAO/manager/CartManager.js";
-import UserManager from "./DAO/manager/UserManager.js";
+import BusinessController from "./controllers/business.controller.js";
+import usersController from "./controllers/users.controller.js";
 
-import userRouter from "./router/users.routes.js";
-import productRouter from "./router/product.routes.js";
-import CartRouter from "./router/cart.routes.js";
+import businessRoutes from "./router/business.routes.js";
 import jwtEstrategy from "./router/jwt.routes.js";
+
+//import ordersRoutes from "./router/orders.router.js"
 
 import initializaPassport from "./config/passport.config.js"; 
 import __dirname from "./utils.js"; 
@@ -24,8 +23,8 @@ import config from "./config/config.js";
 
 const app = express(); 
 
-const product = new ProductManager();
-const carts = new CartManager();
+const product = new BusinessController();
+const carts = new BusinessController();
 //const userManager = new UserManager();
 
 
@@ -74,9 +73,8 @@ app.use(passport.session())
 
 
 //ENRUTADORES. 
-app.use("/api/productos", productRouter) 
-app.use("/api/carritos", CartRouter); /*ESTABLECE UNA RUTA BASE Y REDIRIGE A CARTROUTES*/
-app.use("/api/sessions", userRouter)/*ESTABLECE UNA RUTA BASE Y REDIRIGE A USERROUTES*/
+
+app.use("/api/business", businessRoutes); 
 app.use("/api/jwt", jwtEstrategy)
 
 //HANDLEBARS
