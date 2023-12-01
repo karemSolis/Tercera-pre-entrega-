@@ -7,11 +7,14 @@ import FileStore from 'session-file-store'
 import passport from "passport";
 import * as path from "path" 
 
-import BusinessController from "./controllers/business.controller.js";
+import CartController from "./controllers/cart.controller.js";
+import ProductsController from "./controllers/products.controller.js";
 import usersController from "./controllers/users.controller.js";
 
-import businessRoutes from "./router/business.routes.js";
+import CartRouter from "./router/carts.router.js";
+import productRouter from "./router/products.routes.js";
 import jwtEstrategy from "./router/jwt.routes.js";
+import userRouter from "./router/users.routes.js";
 
 //import ordersRoutes from "./router/orders.router.js"
 
@@ -23,8 +26,8 @@ import config from "./config/config.js";
 
 const app = express(); 
 
-const product = new BusinessController();
-const carts = new BusinessController();
+const product = new ProductsController();
+const carts = new CartController();
 //const userManager = new UserManager();
 
 
@@ -74,8 +77,11 @@ app.use(passport.session())
 
 //ENRUTADORES. 
 
-app.use("/api/business", businessRoutes); 
+app.use("/api/productos", productRouter) 
+app.use("/api/carritos", CartRouter); /*ESTABLECE UNA RUTA BASE Y REDIRIGE A CARTROUTES*/
+app.use("/api/sessions", userRouter)/*ESTABLECE UNA RUTA BASE Y REDIRIGE A USERROUTES*/
 app.use("/api/jwt", jwtEstrategy)
+
 
 //HANDLEBARS
 app.engine("handlebars", engine());  /*acá le digo al servidor que usaremos M.P.handlebars para el uso de express y que será a
