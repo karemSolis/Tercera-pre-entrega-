@@ -82,6 +82,8 @@ app.use("/api/productos", productRouter)
 app.use("/api/carritos", CartRouter); /*ESTABLECE UNA RUTA BASE Y REDIRIGE A CARTROUTES*/
 app.use("/api/sessions", userRouter)/*ESTABLECE UNA RUTA BASE Y REDIRIGE A USERROUTES*/
 app.use("/api/jwt", jwtEstrategy)
+//no olvidar la ruta de orders más adelante 
+
 
 
 //HANDLEBARS
