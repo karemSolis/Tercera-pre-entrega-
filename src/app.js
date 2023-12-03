@@ -15,8 +15,7 @@ import CartRouter from "./router/carts.router.js";
 import productRouter from "./router/products.routes.js";
 import jwtEstrategy from "./router/jwt.routes.js";
 import userRouter from "./router/users.routes.js";
-
-//import ordersRoutes from "./router/orders.router.js"
+import ordersRouter from "./router/orders.router.js";
 
 import initializaPassport from "./config/passport.config.js"; 
 import __dirname from "./utils.js"; 
@@ -82,7 +81,8 @@ app.use("/api/productos", productRouter)
 app.use("/api/carritos", CartRouter); /*ESTABLECE UNA RUTA BASE Y REDIRIGE A CARTROUTES*/
 app.use("/api/sessions", userRouter)/*ESTABLECE UNA RUTA BASE Y REDIRIGE A USERROUTES*/
 app.use("/api/jwt", jwtEstrategy)
-//no olvidar la ruta de orders más adelante 
+app.use("/api/orders", ordersRouter)
+
 
 
 
