@@ -34,7 +34,9 @@ import ProductsDao from "./products.dao.js";
     /*Este método se utiliza para obtener detalles de productos a partir de una lista de IDs de productos.Recibe como argumento productIds, en plural, esto es
     porque busca devolver la lista de todos los carritos */
     async getProductsForCart(productIds) {
-        const products = await this.cartModel.getProductById(productIds); 
+        //const products = await this.cartModel.getProductById(productIds); 
+        const products = await this.productsDao.getProductById(productIds);
+
 
         return products; 
     }

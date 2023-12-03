@@ -102,25 +102,21 @@ style.css y realtimeproduct.js dentro de public*/
 //---------------------------------------------------------------------------------------------------------------------//
 
 /*DEFINICIÓN DE RUTAS DE MI APP Y ESPECIFICACIÓN DE RESPUESTAS A LAS SOLICITUDES HTTP EN CADA RUTA */
-app.get("/products", async (req, res) => { /*RESPONDE A UNA SOLICITUD GET EN LA URL /PRODUCTS. /IMPORTANTE RECORDAD QUE REQ Y RES SON OBJETOS
-ESTAS SE USAN PARA MANEJAR SOLICITUDES Y RESPUESTAS HTTP: REQ (REQUEST)-REPRESENTA LA SOLICITUD Y RES(RESPONSE)-REPRESENTA LA RESPUESTA A
-DICHA SOLICITUD.Cuando un cliente (como un navegador) envía una solicitud GET a la URL "/products", esta ruta se activará y el controlador 
-que sigue a continuación se ejecutará para manejar la solicitud.*/
-  if (req.session.emailUsuario) { /*Esta parte del código verifica si existe una sesión activa para el usuario. El objeto req representa la 
-  solicitud http entrante y contien información, incluida la sessión del usuario si existe, así q si req.session.emailUsuario es verdadero
-  el usuario tiene una sessión activada, osea está registrado :P*/
-  res.redirect("/login");
-
-    let products = await product.getProducts(); /*En esta línea se obtienen los productos utilizando la función getProducts del objeto products*/
-    res.render("products", { /*Se renderiza la vista products y se envía al cliente como respuesta, esta se compone de un objeto que contiene 
-    información que se utilizara en la vista y se muestra a los usuarios*/
-      title: "Productos",
-      products: products,
-      email: req.session.emailUsuario,
-      rol: req.session.rolUsuario, 
-    });
+app.get("/products", async (req, res) => { 
+  if (!req.session.emailUsuario) { 
+    res.redirect("/login");
+    return;
   }
+
+  let products = await product.getProducts(); 
+  res.render("products", { 
+    title: "Productos",
+    products: products,
+    email: req.session.emailUsuario,
+    rol: req.session.rolUsuario, 
+  });
 });
+
 
 //-----------------------------------------------------------------
 
