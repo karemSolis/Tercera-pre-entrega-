@@ -1,13 +1,14 @@
-import usersController from "../controllers/users.controller.js";
+
 import { Router } from "express";
 import { createHash, isValidPassword } from "../utils.js"; //MODIFIQUÉ ACÁ REF.LOGIN
 import passport from "passport"; //REF.LOGIN
 import GitHubStrategy from "passport-github2"
+import usersDao from "../DAO/classes/users.dao.js";
 
 
 
 const userRouter = Router();
-const users= new usersController();
+const users = new usersDao();
 
 
 userRouter.post("/formRegister", passport.authenticate('formRegister',{failureRedirect:'/login'}), async (req, res) => { 

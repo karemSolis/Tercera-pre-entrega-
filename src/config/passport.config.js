@@ -3,7 +3,7 @@ import GitHubStrategy from "passport-github2"
 import { createHash, isValidPassword } from "../utils.js"
 import passport from "passport"
 import local from "passport-local"
-import usersController from "../controllers/users.controller.js"
+import usersDao from "../DAO/classes/users.dao.js"
 
 const localStrategy = local.Strategy
 
@@ -14,7 +14,7 @@ const initializaPassport = () => {
         const { first_name, last_name, email, age, rol } = req.body;
 
         try {
-            let user = await usersController.findEmail({ email: username });
+            let user = await usersDao.findEmail({ email: username });
 
             //if (user !== undefined) {
             if (user) {
@@ -25,7 +25,7 @@ const initializaPassport = () => {
             const hashedPassword = await createHash(password); // Aquí se hashea la contraseña
             const newUser = { first_name, last_name, email, age, rol, password: hashedPassword };
 
-            const result = await usersController.addUser(newUser);
+            const result = await usersDao.addUser(newUser);
             if (result === 'Usuario creado correctamente') {
                 // Usuario creado con éxito
                 return done(null, user);
@@ -88,7 +88,7 @@ const initializaPassport = () => {
          try {
              console.log(profile)
          ////Verificación del Usuario:
-             let user = await usersController.findEmail({ email: profile.__json.email }) //busca en la base de datos si ya existe un usuario con la dirección de correo electrónico proporcionada por GitHub.
+             let user = await usersDao.findEmail({ email: profile.__json.email }) //busca en la base de datos si ya existe un usuario con la dirección de correo electrónico proporcionada por GitHub.
              if(!user){ //si usuario no existe 
          ////Creación de un Nuevo Usuario:
                  let newUser = { //vamos a crear un nuevo usuario 
@@ -101,7 +101,7 @@ const initializaPassport = () => {
 
                  }
 
-                 let result = await usersController.addUser(newUser) //agrega el nuevo usuario a la base de datos.
+                 let result = await usersDao.addUser(newUser) //agrega el nuevo usuario a la base de datos.
                  done(null,result) //indica que la autenticación ha tenido éxito y proporciona el resultado (el nuevo usuario) a Passport.
              }
          ////Manejo de Errores:

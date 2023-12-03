@@ -7,9 +7,9 @@ import FileStore from 'session-file-store'
 import passport from "passport";
 import * as path from "path" 
 
-import CartController from "./controllers/cart.controller.js";
-import ProductsController from "./controllers/products.controller.js";
-import usersController from "./controllers/users.controller.js";
+import CartDao from "./DAO/classes/cart.dao.js";
+import ProductsDao from "./DAO/classes/products.dao.js";
+
 
 import CartRouter from "./router/carts.router.js";
 import productRouter from "./router/products.routes.js";
@@ -22,12 +22,13 @@ import initializaPassport from "./config/passport.config.js";
 import __dirname from "./utils.js"; 
 
 import config from "./config/config.js";
+import usersDao from "./DAO/classes/users.dao.js";
 
 
 const app = express(); 
 
-const product = new ProductsController();
-const carts = new CartController();
+const product = new ProductsDao();
+const carts = new CartDao();
 //const userManager = new UserManager();
 
 

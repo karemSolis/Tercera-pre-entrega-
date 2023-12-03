@@ -1,8 +1,8 @@
 
-import productModel from "../DAO/models/products.js"
+import productModel from "../models/products.js"
 
 
-class ProductsController {
+class ProductsDao {
     async addProduct(product) {
         try {
             const newProduct = new productModel.create(product);
@@ -69,4 +69,4 @@ class ProductsController {
 
 
 
-export default ProductsController;
+export default ProductsDao;

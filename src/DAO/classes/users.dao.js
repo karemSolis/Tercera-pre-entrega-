@@ -1,7 +1,8 @@
-import { usersModel } from "../DAO/models/user.js"
-import { createHash, isValidPassword } from "../utils.js";
 
-class usersController {
+import { createHash, isValidPassword } from "../../utils.js";
+import usersModel from "../models/user.js";
+
+class usersDao {
     constructor() {
         this.userModel = usersModel;
 
@@ -127,4 +128,4 @@ class usersController {
 
 }
 
-export default usersController; 
+export default usersDao; 

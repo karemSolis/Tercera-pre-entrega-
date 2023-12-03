@@ -1,14 +1,14 @@
 
 import { Router } from "express";
 import cartModel from "../DAO/models/cart.js";
-import ProductsController from "../controllers/products.controller.js";
-import CartController from "../controllers/cart.controller.js";
+import productModel from "../DAO/models/products.js";
+import CartDao from "../DAO/classes/cart.dao.js";
 
 
 
 const CartRouter = Router();
-const carts = new CartController();
-const productsController = new ProductsController();
+const carts = new CartDao();
+const productsModel = new productModel();
 
 // Ruta para agregar un producto a un carrito específico
 CartRouter.post('/:cartId/productos/:productId', async (req, res) => {
@@ -21,7 +21,7 @@ CartRouter.post('/:cartId/productos/:productId', async (req, res) => {
     }
 
     // Verificar si el producto existe
-    const product = await productsController.exist(productId);
+    const product = await productsModel.exist(productId);
     if (!product) {
         return res.status(404).json({ error: 'El producto no existe' });
     }

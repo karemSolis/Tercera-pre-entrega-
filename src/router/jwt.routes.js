@@ -1,17 +1,16 @@
 import { generateToken, authToken, isValidPassword, createHash } from "../utils.js";
 import { Router } from "express";
 
-import UsersController from "../controllers/users.controller.js";
-
+import usersDao from "../DAO/classes/users.dao.js";
 const jwtEstrategy = Router();
 
-const usersController = new UsersController(); 
+const UsersDao = new usersDao()
 
 // Endpoint para el registro de usuarios
 jwtEstrategy.post("/formRegister", async (req, res) => {
     const { name, email, password } = req.body;
     // Validación si existe el usuario
-    const exist = await usersController.findEmail({ email });
+    const exist = await UsersDao.findEmail({ email });
     if (exist) {
         return res.status(400).send({ error: "El usuario ya existe" });
     }
@@ -23,7 +22,7 @@ jwtEstrategy.post("/formRegister", async (req, res) => {
         password
     };
 
-    const result = await usersController.addUser(user);
+    const result = await UsersDao.addUser(user);
     if (result === 'Error al crear el usuario') {
         return res.status(500).send({ status: 'error', error: result });
     }
@@ -50,7 +49,7 @@ jwtEstrategy.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     // Validar si el email y la contraseña corresponden a un usuario
-    const user = await usersController.findEmail({ email });
+    const user = await UsersDao.findEmail({ email });
     console.log('Usuario encontrado:', user);
     console.log('Contraseña proporcionada:', password);
     // Si no existe el usuario, retornar un error
