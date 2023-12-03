@@ -4,6 +4,7 @@ import { createHash, isValidPassword } from "../utils.js"; //MODIFIQUÉ ACÁ REF
 import passport from "passport"; //REF.LOGIN
 import GitHubStrategy from "passport-github2"
 import usersDao from "../DAO/classes/users.dao.js";
+import { getUsers, getUserById, saveUser } from "../controllers/users.controller.js";
 
 
 
@@ -105,6 +106,12 @@ userRouter.get("/githubcallback", passport.authenticate("github", { failureRedir
     req.session.rolUsuario = req.session.user.rol
     res.redirect("/")
 });
+
+//-------------------------------------------------
+
+userRouter.get("/", getUsers)
+userRouter.get("/:uid", getUserById)
+userRouter.post("/", saveUser)
 
 
 export default userRouter;

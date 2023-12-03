@@ -30,21 +30,6 @@ jwtEstrategy.post("/formRegister", async (req, res) => {
     res.send({ status: "success", access_token });
 });
 
-/*// Endpoint para el inicio de sesión
-jwtEstrategy.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    // Validar si el email y la contraseña corresponden a un usuario
-    const user = await usersManager.findEmail(
-        (user) => user.email === email && user.password === password
-    );
-    // Si no existe el usuario, retornar un error
-    if (!user) {
-        return res.status(400).send({ status: "error", error: "Credenciales inválidas" });
-    }
-    // Crear un token y enviar la respuesta
-    const access_token = generateToken(user);
-    res.send({ status: "success", access_token });
-});*/
 jwtEstrategy.post("/login", async (req, res) => {
     const { email, password } = req.body;
 

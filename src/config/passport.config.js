@@ -7,14 +7,14 @@ import usersDao from "../DAO/classes/users.dao.js"
 
 const localStrategy = local.Strategy
 
-//const usersController = new UsersController(); 
+const UsersDao = new usersDao(); 
 
 const initializaPassport = () => {
     passport.use('formRegister', new localStrategy({passReqToCallback: true, usernameField: "email"}, async (req, username, password, done) => {
         const { first_name, last_name, email, age, rol } = req.body;
 
         try {
-            let user = await usersDao.findEmail({ email: username });
+            let user = await UsersDao.findEmail({ email: username });
 
             //if (user !== undefined) {
             if (user) {
@@ -25,7 +25,7 @@ const initializaPassport = () => {
             const hashedPassword = await createHash(password); // Aquí se hashea la contraseña
             const newUser = { first_name, last_name, email, age, rol, password: hashedPassword };
 
-            const result = await usersDao.addUser(newUser);
+            const result = await UsersDao.addUser(newUser);
             if (result === 'Usuario creado correctamente') {
                 // Usuario creado con éxito
                 return done(null, user);
@@ -45,14 +45,14 @@ const initializaPassport = () => {
     })
 
     passport.deserializeUser(async (id, done) => {
-        let user = await usersManager.getUserById(id)
+        let user = await UsersDao.getUserById(id)
         done(null, user)
     })
 
     passport.use('login', new localStrategy({ usernameField: "email" }, async (username, password, done) => {
 
     try {
-        const user = await usersManager.findEmail({ email: username });
+        const user = await UsersDao.findEmail({ email: username });
         if (!user) {
             console.log("No se encuentra al usuario o no existe");
             return done(null, false);
@@ -88,7 +88,7 @@ const initializaPassport = () => {
          try {
              console.log(profile)
          ////Verificación del Usuario:
-             let user = await usersDao.findEmail({ email: profile.__json.email }) //busca en la base de datos si ya existe un usuario con la dirección de correo electrónico proporcionada por GitHub.
+             let user = await UsersDao.findEmail({ email: profile.__json.email }) //busca en la base de datos si ya existe un usuario con la dirección de correo electrónico proporcionada por GitHub.
              if(!user){ //si usuario no existe 
          ////Creación de un Nuevo Usuario:
                  let newUser = { //vamos a crear un nuevo usuario 
@@ -101,7 +101,7 @@ const initializaPassport = () => {
 
                  }
 
-                 let result = await usersDao.addUser(newUser) //agrega el nuevo usuario a la base de datos.
+                 let result = await UsersDao.addUser(newUser) //agrega el nuevo usuario a la base de datos.
                  done(null,result) //indica que la autenticación ha tenido éxito y proporciona el resultado (el nuevo usuario) a Passport.
              }
          ////Manejo de Errores:
