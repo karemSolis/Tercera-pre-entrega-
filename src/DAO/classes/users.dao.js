@@ -124,6 +124,16 @@ class usersDao {
             return 'Error al obtener el usuario';
         }
     }
+    
+    saveUser = async (user) => {
+        try {
+            let result = await this.userModel.create(user)
+            return result
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
 
 
 }

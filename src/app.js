@@ -50,7 +50,8 @@ mongoose.connect(config.mongoUrl)
 
 
 const sessionOptions = {
-  store: new MongoStore({
+  store: MongoStore.create({
+  //store: new MongoStore({
     mongoUrl: process.env.SESSION_MONGO_URL,
     mongoOptions: {
       useNewUrlParser: true,

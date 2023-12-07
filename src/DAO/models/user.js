@@ -8,7 +8,14 @@ const usersSchema = new mongoose.Schema({
     email: String, //para login 
     age: Number,
     password: String, //para login
-    rol: String //rol para ver hacia donde se dirige la página 
+    rol: String, //rol para ver hacia donde se dirige la página 
+    orders: [
+        {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref:"Orders"
+        }
+
+    ]
 })
 
 export const usersModel = mongoose.model(usersCollection, usersSchema)

@@ -1,42 +1,45 @@
 import orderModel from "../models/order.js"
-import CartDao from "./cart.dao.js"
 
-class ordersDao {
-    constructor () {
-        this.cartDao = new CartDao
-    }
 
-    async getOrders () {
+export default class Order {
+    getOrders = async () => {
         try {
-            const orders = await this.carDao.find().lean()
-            return orders;
+            let result =  await orderModel.find()
+            return result
+        } catch (error) {
+            console.log(error)
+            return null
         }
-        catch (error){
-            return "No se puede obtener la orden"
+    }
+
+    getOrdersById = async (id) => {
+        try {
+            let result = await orderModel.findOne({_id: id})
+            return result
+        } catch (error) {
+            console.log(error)
+            return null
         }
+    } 
 
+    createOrder = async (order) => {
+        try {
+            let result = await orderModel.create(order)
+            return result
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    } 
+
+    resolveOrder = async (id, order) => {
+        try {
+            let result = await orderModel.updateOne({ _id: id }, { $set: order })
+        } catch (error) {
+            console.log(error)
+            return null
+        }
     }
-
-    async getOrderById (orderId) {
-        const order = await orderModel.exist(orderId)
-        if (!order) return "orden no existe"
-        return order; 
-
-    }
-    
-    async createOrder () {
-        const order = await orderModel.create({ order: []})
-        return "Orden creada"
-
-    }
-    
-    async resolveOrder () {
-
-    }
-    
-
-
 }
 
-export default ordersDao
 

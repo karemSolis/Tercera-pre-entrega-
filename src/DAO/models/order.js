@@ -6,16 +6,16 @@ const schema = new mongoose.Schema({
     number: Number,
     cart: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "cartModel"
+        ref: "carritos"
     },
     user: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "usersModel"
+        ref: "usuarios"
     },
     products: [],
     totalPrice: Number,
     status: String,
-    //ref: "productModel"
+    //ref: "productos"
 })
 
 const orderModel = mongoose.model(collection, schema)
