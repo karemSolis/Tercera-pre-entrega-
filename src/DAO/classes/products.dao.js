@@ -5,7 +5,7 @@ import productModel from "../models/products.js"
 class ProductsDao {
     async addProduct(product) {
         try {
-            const newProduct = new productModel.create(product);
+            const newProduct = new productModel(product);
             await newProduct.save();
             return "Producto agregado";
         } catch (error) {

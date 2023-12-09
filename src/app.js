@@ -79,8 +79,8 @@ app.use(passport.session())
 //ENRUTADORES. 
 
 app.use("/api/productos", productRouter) 
-app.use("/api/carritos", CartRouter); /*ESTABLECE UNA RUTA BASE Y REDIRIGE A CARTROUTES*/
-app.use("/api/sessions", userRouter)/*ESTABLECE UNA RUTA BASE Y REDIRIGE A USERROUTES*/
+app.use("/api/carritos", CartRouter);
+app.use("/api/sessions", userRouter)
 app.use("/api/jwt", jwtEstrategy)
 app.use("/api/orders", ordersRouter)
 

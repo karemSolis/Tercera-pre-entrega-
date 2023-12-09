@@ -25,7 +25,7 @@ import ProductsDao from "./products.dao.js";
     /*Este método se utiliza para obtener un carrito específico de la base de datos según un ID dado, toma de argumento el id que debería ser único del carrito que quiero
     recuperar, llama al método exist(id)para verificar si existe un carrito con ese id en la base de datos, si no se encuentra carrito con ese id devuelve mensaje: "carrito no existe" */
     async getCartsById(cartId) {
-        const cart = await this.cartModel.exist(cartId);
+        const cart = await this.exist(cartId);
         if (!cart) return "Carrito no existe";
         return cart;
     }
@@ -41,38 +41,52 @@ import ProductsDao from "./products.dao.js";
         return products; 
     }
 
-    /*addProductInCart Tiene como propósito agregar un producto a un carrito específico */
+
     async addProductInCart(cartId, productId) { 
-        const cart = await this.cartModel.exist(cartId);
+        const cart = await this.exist(cartId);
        
         if (!cart) {
             console.log("Carrito no existe");
             return "Carrito no existe";
         }
-        // BUSCA EL PRODUCTO en la base de datos con el ID especificado (productId).
-        const product = await this.cartModel.exist(productId);
-        // Verifica si el producto no existe en la base de datos.
+    
+        // Buscar el producto en la base de datos con el ID especificado (productId).
+        const product = await this.productsDao.exist(productId);
+    
+        // Verificar si el producto no existe en la base de datos.
         if (!product) {
             console.log("No se encuentra el producto");
-            return "No se encuentra el producto"; //retorna respuesta 
+            return "No se encuentra el producto";
         }
-
-        // COMPRUEBA si el producto ya está presente en el carrito.
-        if (cart.products.some((prod) => prod.id.equals(product._id))) { 
-            const existingProduct = cart.products.find((prod) => prod.id.equals(productId));
+    
+        // Comprobar si el producto ya está presente en el carrito.
+        const existingProduct = cart.products.find((prod) => prod.id.equals(productId));
+    
+        if (existingProduct) {
+            // El producto ya está en el carrito, incrementar la cantidad.
             existingProduct.quantity++;
-            await cart.save(); 
             console.log("Producto sumado en el carrito");
-            cart.products.push({ id: productId, quantity: 1 }); 
-            await cart.save(); 
+        } else {
+            // El producto no está en el carrito, agregarlo.
+            cart.products.push({ id: productId, quantity: 1 });
             console.log("Producto en el carrito :)");
         }
+    
+        // Guardar el carrito actualizado en la base de datos.
+        await cart.save();
+        console.log("Carrito actualizado:", cart);
+    
         return "Producto agregado al carrito";
+    }
+    
+    
+   
+
+        
     }
 
 
 
-}
 
 
 export default  CartDao

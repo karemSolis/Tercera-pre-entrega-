@@ -20,3 +20,22 @@ const schema = new mongoose.Schema({
 
 const orderModel = mongoose.model(collection, schema)
 export default orderModel
+
+/*
+
+
+{
+    "first_name": "Nanami",
+    "last_name": "Kento",
+    "email": "nanamikentoq@gmail.com",
+    "age": "28",
+    "password": "123456",
+    "rol": "user",
+    "orders": []
+
+}
+
+
+
+
+*/

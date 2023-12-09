@@ -15,4 +15,13 @@ const productModel = mongoose.model(productCollection, productSchema)
 
 export default productModel
 
+/*
 
+{
+    "product": "String",
+    "description": "String",
+    "price": 1000,
+}
+
+
+*/
